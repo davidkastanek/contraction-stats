@@ -1,16 +1,12 @@
 version: '3.7'
 services:
     app:
-        build: .
+        image: kastanek/contraction-stats
         command: php -S 0.0.0.0:8120 -t /app
         ports:
             - "8120:8120"
-        volumes:
-            - ./:/app
     phplite:
-        build: .
+        image: kastanek/contraction-stats
         command: php -S 0.0.0.0:8121 -t /app/www/phplite
         ports:
             - "8121:8121"
-        volumes:
-            - ./:/app

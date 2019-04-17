@@ -3,10 +3,25 @@ This application is able to track duration of contractions during labor, calcula
 
 ![alt text](https://raw.githubusercontent.com/davidkastanek/contraction-stats/master/doc/app.png)
 ## How to use
-You need to have `docker-compose` installed on your system. 
-Run `docker-compose up -d kastanek/contraction-stats` to launch the app. Then access http://localhost:8120/www/index.php from your browser. The rest is simple. Click "Start contraction" button, if contraction starts and click "End contraction" when it finishes. The app will then instantly provide you with statistics.
-
-If you make a mistake, you can edit all the logged data manually using build in phplite database browser. Just access http://localhost:8121/phpliteadmin.php - password is "admin" (without quotes).
+* You need to have `docker-compose` installed on your system.
+* Create new directory and in there create file `docker-compose.yml` with following contents:
+```
+version: '3.7'
+services:
+    app:
+        image: kastanek/contraction-stats
+        command: php -S 0.0.0.0:8120 -t /app
+        ports:
+            - "8120:8120"
+    phplite:
+        image: kastanek/contraction-stats
+        command: php -S 0.0.0.0:8121 -t /app/www/phplite
+        ports:
+            - "8121:8121"
+```
+* From the directory run `docker-compose up -d` to launch the app.
+* Access http://localhost:8120/www/index.php from your browser. The rest is simple. Click "Start contraction" button, if contraction starts and click "End contraction" when it finishes. The app will then instantly provide you with statistics.
+* If you make a mistake, you can edit all the logged data manually using build in phplite database browser. Just access http://localhost:8121/phpliteadmin.php - password is "admin" (without quotes).
 ## The story
 I coded this app in 2 hours, while I was sitting next to my wife, which was going through her 8th hour of contractions, while giving birth to our 2nd child. Doctors told as the we should wait for 5 minute intervals between contractions, lasting at least 50 seconds, until we would drive to the hospital. After writing down a couple of contractions on a piece of paper, I decided to cut the endless waiting and do this really fast, poorly written application to make our life a little easier.
 
